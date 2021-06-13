@@ -15,11 +15,10 @@ DHTesp dht;
 
 unsigned long lastMotorRunTime;
 
-
 const char* ssid = "Luna Inc";
 const char* password = "Ydfmx69VN!74";
 String urlRequest = "http://192.168.1.79:8080/api/v1/device/save";
-String device_uuid = "PFPW60c485af4b5c8";
+String device_uuid = "PFPW60c542216c2ac";//PFPW60c542216c2ac - PFPW60c485af4b5c8
 String token = "Bearer BB28zTNUInRYqRjtrTN8gjEtkkvz8eiBJsfs24bb";
 
 const char* statusOK = "OK";
@@ -58,7 +57,7 @@ void setup() {
 void loop() {
 
 
-      Serial.println("GG");
+      //Serial.println("GG");
       delay(dht.getMinimumSamplingPeriod());
       float humidity = dht.getHumidity(); // obtenemos la humedad
       float temperature = dht.getTemperature(); //obtenemos la temperatura
@@ -66,32 +65,32 @@ void loop() {
       
 
       if(dht.getStatusString() == statusOK){
-//3,600,000
-        if(millis()-lastMotorRunTime > 900000)  // 15 minutes have passed
-    {
-          Serial.print("Temperatura: ");
-        Serial.print(temperature);
-        Serial.print(" Humedad: ");
-        Serial.print(humidity);
-        Serial.println();
-
-        //clientTemp.setInsecure(); //the magic line, use with caution
-        //clientTemp.connect(urlRequest, 8080);
-        httpClientTemp.begin(urlRequest);
-        httpClientTemp.addHeader("Content-Type", "application/json");
-        httpClientTemp.addHeader("Authorization", token);
-        String idSensorDevice = "1";
-        String body = "{\"token\":\""+device_uuid+"\",\"values\":[{\"item\":\"Humedad\",\"valor\":\""+humidity+"\"},{\"item\":\"Temperatura\",\"valor\":\""+temperature+"\"}],\"sensor_device_id\": \""+idSensorDevice+"\"}";
-        int httpResponseCode = httpClientTemp.POST(body);
-        if  (httpResponseCode > 0){
-            
-            Serial.print("ResponseCode: ");
-            Serial.println(httpResponseCode);
-           }
-          httpClientTemp.end();        
-         lastMotorRunTime = millis();
-    }
-    delay(100); // loop about every 1/10 second, or whatever works
+            //3,600,000
+            if(millis()-lastMotorRunTime > 900000){  // 15 minutes have passed
+        
+            Serial.print("Temperatura: ");
+            Serial.print(temperature);
+            Serial.print(" Humedad: ");
+            Serial.print(humidity);
+            Serial.println();
+    
+            //clientTemp.setInsecure(); //the magic line, use with caution
+            //clientTemp.connect(urlRequest, 8080);
+            httpClientTemp.begin(urlRequest);
+            httpClientTemp.addHeader("Content-Type", "application/json");
+            httpClientTemp.addHeader("Authorization", token);
+            String idSensorDevice = "2";
+            String body = "{\"token\":\""+device_uuid+"\",\"values\":[{\"item\":\"Humedad\",\"valor\":\""+humidity+"\"},{\"item\":\"Temperatura\",\"valor\":\""+temperature+"\"}],\"sensor_device_id\": \""+idSensorDevice+"\"}";
+            int httpResponseCode = httpClientTemp.POST(body);
+            if  (httpResponseCode > 0){
+                
+                Serial.print("ResponseCode: ");
+                Serial.println(httpResponseCode);
+            }
+              httpClientTemp.end();        
+             lastMotorRunTime = millis();
+        }
+        delay(100); // loop about every 1/10 second, or whatever works
         
        
        
